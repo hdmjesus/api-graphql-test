@@ -1,7 +1,14 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
+import { MaxLength, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateUserInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @MaxLength(30, {
+    message: 'Title must be at most 30 characters long',
+  })
+  @MinLength(3, {
+    message: 'Title must be at least 3 characters long',
+  })
+  @Field({ nullable: false })
+  name?: string;
 }

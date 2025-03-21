@@ -5,11 +5,11 @@
 input CreatePostInput {
   content: String
   title: String!
+  userId: String!
 }
 
 input CreateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  name: String!
 }
 
 type Mutation {
@@ -33,8 +33,7 @@ type Query {
 }
 
 input UpdateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  name: String
   userId: Int!
 }
 
