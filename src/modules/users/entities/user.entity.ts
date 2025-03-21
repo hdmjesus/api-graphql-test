@@ -14,8 +14,12 @@ export class User {
   name: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }] })
-  @Field(() => [Post], { nullable: true })
-  posts: Post[];
+  @Field(() => [String], { nullable: true })
+  posts: string[];
+
+  @Prop({ type: Date, default: Date.now })
+  @Field(() => Date)
+  createdAt: Date;
 }
 
 export type UserDocument = User & Document;

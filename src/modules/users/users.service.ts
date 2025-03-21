@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Post } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { Model } from 'mongoose';
@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 export class UsersService {
   constructor(
     @InjectModel(User.name)
+    @InjectModel(Post.name)
     private userModel: Model<UserDocument>,
   ) {}
   async create(createUserInput: CreateUserInput) {
@@ -21,7 +22,7 @@ export class UsersService {
   }
 
   async findOne(id: number): Promise<User> {
-    const user = await this.userModel.findById(id).exec();
+    const user = await this.userModel.findById(id).populate('posts').exec();
 
     if (!user) {
       throw new NotFoundException('Post not found');
@@ -52,5 +53,18 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     return await this.userModel.deleteOne({ _id: id }).exec();
+  }
+
+  async deleteAllPostsFromUser(id: string) {
+    await this.userModel.updateOne(
+      { _id: '67dd5cf91be31b37a583ddbb' },
+      { $set: { posts: [] } },
+    );
+    const user = await this.userModel.findById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    user.posts = [];
+    return await user.save();
   }
 }

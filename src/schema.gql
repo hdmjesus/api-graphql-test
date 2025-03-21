@@ -12,8 +12,14 @@ input CreateUserInput {
   name: String!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
+  deleteAllPostsFromUser(userId: String!): User!
   newPost(postInput: CreatePostInput!): Post!
   removeUser(id: Int!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
@@ -39,6 +45,7 @@ input UpdateUserInput {
 
 type User {
   _id: ID!
+  createdAt: DateTime!
   name: String!
-  posts: [Post!]
+  posts: [String!]
 }
